@@ -1,0 +1,63 @@
+#qmake -o Makefile BT.pro, but I just use makefile 
+
+CC = /usr/bin/arm-linux-gnueabihf-gcc
+CXX = /usr/bin/arm-linux-gnueabihf-g++
+
+
+#just copy from ALE
+TAR           = tar -cf
+COMPRESS      = gzip -9f
+COPY          = cp -f
+SED           = sed
+COPY_FILE     = cp -f
+COPY_DIR      = cp -f -R
+STRIP         = /misc/80x8ee_dev/80x8ee/toolchain.rcpl0031/sysroots/x86_64-wrlinuxsdk-linux/usr/bin/armv5te-wrs-linux-gnueabi/arm926ejs-wrswrap-linux-gnueabi-strip
+INSTALL_FILE  = install -m 644 -p
+INSTALL_DIR   = $(COPY_DIR)
+INSTALL_PROGRAM = install -m 755 -p
+DEL_FILE      = rm -f
+SYMLINK       = ln -f -s
+DEL_DIR       = rmdir
+MOVE          = mv -f
+CHK_DIR_EXISTS= test -d
+MKDIR         = mkdir -p
+
+####### Output directory
+
+OBJECTS_DIR   = .obj/
+
+
+first: 
+####### Implicit rules
+
+.SUFFIXES: .o .c .cpp .cc .cxx .C
+
+.cpp.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o "$@" "$<"
+
+.cc.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o "$@" "$<"
+
+.cxx.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o "$@" "$<"
+
+.C.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o "$@" "$<"
+
+.c.o:
+	$(CC) -c $(CFLAGS) $(INCPATH) -o "$@" "$<"
+	
+	
+	
+SOURCES = oswrapper/cmd_reg.cpp \
+		oswrapper/shell.cpp \
+		oswrapper/id.cpp \
+		oswrapper/shell_exec.cpp \
+		oswrapper/mem_wrapper.cpp \
+		oswrapper/os_wrapper.cpp \
+		oswrapper/syslog.cpp \
+
+
+
+
+
