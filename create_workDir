@@ -1,0 +1,14 @@
+#!/bin/bash
+
+WORKDIR=/localdisk/work 
+PLATDIR=${WORKDIR}/platform
+APPLDIR=${WORKDIR}/application
+SCRPTDIR=${WORKDIR}/script
+
+ARRAY_DIR="$PLATDIR $APPLDIR $SCRPTDIR"
+
+for i in ${ARRAY_DIR[@]};
+do
+	echo $i
+	mkdir -p ${i}
+done
