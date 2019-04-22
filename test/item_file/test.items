@@ -1,0 +1,12 @@
+/*
+imitate ale-noemmi_settings struct
+eg.
+	I want to do a family-info tree, this file just save info as a array.
+	
+	DEF_ITEM(name_last, name_first, age, sex)
+note:
+	according to macro's function, for ALE, used to generate enum; 
+
+*/
+
+DEF_ITEM(shen, hao , 25, man)

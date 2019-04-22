@@ -2,7 +2,7 @@
 #include"myh.h"
 
 
-int fun2()
+void fun2()
 {
 	printf("world");
 }

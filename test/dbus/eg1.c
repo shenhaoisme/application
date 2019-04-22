@@ -4,6 +4,7 @@
 #include <dbus/dbus-glib.h>  
 #include <dbus/dbus.h>  
 #include <unistd.h>  
+#include <gmessages.h>
 //建立与session D-Bus daemo的连接，并设定连接的名字，相关的代码已经多次使用过了  
 DBusConnection * connect_dbus(){  
     DBusError err;  
@@ -54,7 +55,7 @@ void send_a_method_call(DBusConnection * connection,char * param)
   
     //为消息添加参数。Appendarguments  
     dbus_message_iter_init_append(msg, &arg);  
-    if(!dbus_message_iter_append_basic(&arg, DBUS_TYPE_STRING,¶m)){  
+    if(!dbus_message_iter_append_basic(&arg, DBUS_TYPE_STRING,msg)){  
        g_printerr("Out of Memory!");  
         exit(1);  
     }  
@@ -100,7 +101,7 @@ void send_a_method_call(DBusConnection * connection,char * param)
     else  
         dbus_message_iter_get_basic(&arg, &level);  
   
-    printf("Got Reply: %d,%d\n", stat, level);  
+    printf("Got Reply: %d,%d\n", stat, *level);  
     dbus_message_unref(msg);  
 }  
   
