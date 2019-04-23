@@ -8,12 +8,10 @@ INCPATH =  -I/localdisk/work/platform/dbus-1.12.10/include/ -L/localdisk/work/pl
 
 test:
 	gcc -o dbus_connection_name -Wall dbus_conn_name.c `pkg-config --cflags dbus-1` `pkg-config --libs dbus-1`
+send:
+	gcc -o dbus_send_signal -Wall dbus_send_signal.c `pkg-config --cflags dbus-1` `pkg-config --libs dbus-1`
 
 OBJS=eg1.o
 
-all : ${OBJS}
-	@echo "compile"
-eg1.o : 
-	${CC} ${INCPATH} eg1.c -o eg1
-  
+all : 
   
