@@ -132,7 +132,7 @@ int send_a_signal( char * sigvalue)
     return 0;  
 } 
 int main( int argc , char ** argv){  
-   sendsignal("hell o world!");
+//   sendsignal("hell o world!");
    send_a_signal("Hello,world!");  
     return 0;  
 }  
