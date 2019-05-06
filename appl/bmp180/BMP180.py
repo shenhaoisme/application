@@ -66,8 +66,8 @@ class BMP180(object):
         self.cal_B2  = self._read_s16(BMP180_CAL_B2)     # INT16
         self.cal_MB  = self._read_s16(BMP180_CAL_MB)     # INT16
         self.cal_MC  = self._read_s16(BMP180_CAL_MC)     # INT16
-        self.cal_MD  = self._read_s16(BMP180_CAL_MD)     # INT16
-
+6
+        self.cal_MD  = self._read_s16(BMP180_CAL_MD)     # INT1
     def read_raw_temp(self):
         """Reads the raw (uncompensated) temperature from the sensor."""
         self._write_byte(BMP180_CONTROL, BMP180_READTEMPCMD)
