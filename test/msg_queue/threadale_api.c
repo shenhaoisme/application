@@ -1,19 +1,27 @@
-/*
-
-*/
-
-#include <stdio.h>
-#include <pthread.h>
-#include <stdlib.h>
-#include <syslog.h>
-#include <unistd.h>
-#include "configs.h"
-
-
-
-
+#include "config.h"
 //1 attr 我还不会用
 
+/*!
+ * \brief Inquiry the thread Unique TID. Must be called in thread internal context.
+ *
+ * \param filename  : source file name in which this function is called
+ * \param linenum   : source file line number in which this function is called
+ * \param id        : Thread ID
+ *
+ * \return void
+ */
+/*void _thread_set_tid(const char *filename, int linenum,
+		app_t id)
+{
+	if (id < THREAD_MAX){
+		thread_array[id].thread_tid = syscall(SYS_gettid);	//gettid();
+	}
+	else{
+	  
+	}
+	return;
+}
+*/
 int _thread_create(const char * filename, int linenum, app_t tid, thread_entry_t entry)
 {
 	pthread_attr_t attr;
@@ -59,30 +67,3 @@ pthread_t get_tid(app_t app)
 {
 	return thread_array[(int)app].tid;
 }
-
-/*
-int create(void)
-{
-	pthread_t tid_p;
-	struct member *m;
-	m=(struct member*) malloc(sizeof(struct member)); //create a var
-	
-	m->num=25;
-	m->name="shenhao";
-	
-	if(pthread_create(&tid_p, NULL, callback, (void*)m) == -1)
-	{
-		printf("creat fail\n");
-		return -1;
-	}
-	sleep(1);
-	test_log("id %d ", tid_p);
-	if(pthread_join(tid_p, NULL)) //wait the thread exit 
-	{
-		printf("thread is not exit...\n");
-		return -2;
-	}
-	
-	return 0;
-}
-*/
