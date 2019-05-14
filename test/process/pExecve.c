@@ -6,7 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 
-
+//usage : ./pExecve /bin/echo
 int main(int ac, char* av[])
 {
 	char * avec[10];
