@@ -47,7 +47,7 @@ int createKeypad(int row, int col, int time_out)
 		if(COL_PINS[j] == -1)
 			continue;
 		pinMode(COL_PINS[j],OUTPUT);
-		digitalWrite(COL_PINS[j],LOW);
+		digitalWrite(COL_PINS[j],HIGH);
 	}
 	
 	return 0;
@@ -73,13 +73,11 @@ void _getkey(void)
 		return;
 	for(j=0;j<4;j++)
 	{
-		digitalWrite(COL_PINS[j], HIGH);//roolback
-		delayMicroseconds(10);
-		if(digitalRead(ROW_PINS[row])==HIGH)
+		digitalWrite(COL_PINS[j], LOW);//roolback
+		if(digitalRead(ROW_PINS[row])==LOW)
 		{
-			digitalWrite(COL_PINS[j],LOW);
-			col=j;
-			delayMicroseconds(1000);
+			digitalWrite(COL_PINS[j],HIGH);
+			col=j;			
 			break;
 		}
 		
@@ -96,14 +94,6 @@ void _getkey(void)
 	ret_key=' ';
 	
 	return;
-}
-void waitIRC(void)
-{
-	if(ret_key != ' ' )
-	{
-		printf("\n%c\n",ret_key);
-		ret_key=' ';
-	}
 }
 int main(int ac, char* av[])
 {
