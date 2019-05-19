@@ -19,3 +19,4 @@ except KeyboardInterrupt:
     print("Goodbye")
 finally:
     keypad.cleanup()
+    print("should cleanup pin")
