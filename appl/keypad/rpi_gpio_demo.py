@@ -18,4 +18,4 @@ try:
 except KeyboardInterrupt:
     print("Goodbye")
 finally:
-    keypad.cleanup()
+    #keypad.cleanup()
