@@ -15,5 +15,9 @@ try:
 except KeyboardInterrupt:
     print("Goodbye")
 finally:
+<<<<<<< HEAD
+    #keypad.cleanup()
+=======
     keypad.cleanup()
     print("should cleanup pin")
+>>>>>>> e64712866530313c83f06b226bdee401bb73f4ab
