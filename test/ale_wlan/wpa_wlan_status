@@ -1,0 +1,65 @@
+#!/bin/bash
+#get wpa wlan status
+
+PROGNAME=$(basename $0)
+
+iface=""
+mode="full"
+mktemp="tmp"
+usage() {
+   echo "$PROGNAME  [ -i|--iface <interface> ] [ -s|--state | -n|--name] "
+   echo "display connection state and/or ssid name"
+}
+
+
+# parse option
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --iface | -i)
+        iface="$2"; 
+        shift;
+        ;;
+      --state | -s)
+        mode=state
+        ;;
+      --name | -n)
+        mode=name
+        ;;
+      --help | -h)
+        usage
+        exit 0
+        ;;
+      *)
+        echo "unknown parameter"
+        usage
+        exit 1
+        ;;
+    esac
+    shift
+done
+
+
+ret=0
+tmpfile=$(mktemp)
+/usr/sbin/wpa_cli -i ${iface} status > $tmpfile 2>/dev/null
+if [[ $? -eq 0 ]] && [[ -f $tmpfile ]]; then
+    eval $(cat $tmpfile | grep "ssid=")
+    eval $(cat $tmpfile | grep "wpa_state=")
+else
+    ret=1
+fi
+rm $tmpfile
+
+case "$mode" in 
+    full)
+    echo "name=$ssid"
+    echo "state=$wpa_state"
+    ;;
+    name)
+    echo $ssid
+    ;;
+    state)
+    echo $wpa_state
+esac
+
+exit $ret
