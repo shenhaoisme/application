@@ -30,13 +30,13 @@ int _thread_create(const char * filename, int linenum, app_t tid, thread_entry_t
 	int r, rs =0;
 	rs = pthread_attr_init( &attr );
 	if (rs!=0) {
-        printf( "pthread_attr_init failed, in %s at %d line. ",filename, linenum );
+        test_log( "pthread_attr_init failed, in %s at %d line. ",filename, linenum );
         return -1;
     }
 	
 	r = pthread_create(&m_tid, &attr,(void *(*)(void*)) entry, NULL);
 	if (r!=0) {
-        printf( "thread creation failed, in %s at %d line. ",filename, linenum );
+        test_log( "thread creation failed, in %s at %d line. ",filename, linenum );
         return -1;
     }
 	else
@@ -48,7 +48,7 @@ int _thread_create(const char * filename, int linenum, app_t tid, thread_entry_t
 	
 	rs = pthread_attr_destroy(&attr);
 	if(rs != 0)
-		 printf( "pthread attribute destroy failed in %s at %d line. ",filename, linenum );
+		 test_log( "pthread attribute destroy failed in %s at %d line. ",filename, linenum );
 		
 	return 0;
 }
