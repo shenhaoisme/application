@@ -22,7 +22,7 @@ void app_init(void)
 		printf("app mutex fail\n");
 	}
 	
-	if(0 == thread_creat(app1, app_thread_entry))
+	if(0 != thread_creat(app1, app_thread_entry))
 	{
 		printf("thread create fail\n");
 	}
