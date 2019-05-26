@@ -1,4 +1,11 @@
 #include "config.h"
+/*
+虽然命名为api，但还是高度依赖config 文件
+
+
+
+*/
+
 //1 attr 我还不会用
 
 /*!
@@ -57,6 +64,10 @@ int _thread_create(const char * filename, int linenum, app_t tid, thread_entry_t
 APP API
 所有app都会去调用的api
 ********************************/
+void exit(app_t app)
+{
+
+}
 void run(app_t app, bool background)
 {
 	if(background)
