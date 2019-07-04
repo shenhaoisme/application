@@ -1,0 +1,10 @@
+储存路径：
+/usr/lib/python2.7/multiprocessing/
+/usr/lib/python2.7/threading
+
+thread 网上好多用这个模块
+
+两个模块使用有差别
+t1=td.Thread(target=job,args=(1,2))
+
+t1=td.start_new_thread(job,(1,2))
