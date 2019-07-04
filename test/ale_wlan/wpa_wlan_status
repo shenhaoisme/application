@@ -41,7 +41,7 @@ done
 
 ret=0
 tmpfile=$(mktemp)
-/usr/sbin/wpa_cli -i ${iface} status > $tmpfile 2>/dev/null
+/sbin/wpa_cli -i ${iface} status > $tmpfile 2>/dev/null
 if [[ $? -eq 0 ]] && [[ -f $tmpfile ]]; then
     eval $(cat $tmpfile | grep "ssid=")
     eval $(cat $tmpfile | grep "wpa_state=")
