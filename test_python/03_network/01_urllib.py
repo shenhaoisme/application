@@ -15,7 +15,7 @@ from urllib.request import urlretrieve
 
 
 IMAGE_URL = "http://image.nationalgeographic.com.cn/2017/1122/20171122113404332.jpg"
-
+IMAGE_URL_girl = "https://www.mzitu.com/191102/6"
 
 '''
 例子1 从server获取的内容是responese，这个内容支持好几种读取的方式。然后，以 bytes 为单位
@@ -26,7 +26,7 @@ with open('./image/fish.jpg', 'wb') as fp:
 	fp.write(responese.read())
 
 '''另一个更好用的函数'''	
-urlretrieve(IMAGE_URL, './image/fish01.ipg')
+urlretrieve(IMAGE_URL_girl, './image/girl.jpg')
 
 
 '''做好这个page不会用'''
@@ -37,6 +37,6 @@ headers = {
     'Referer': r'http://www.lagou.com/zhaopin/Python/?labelWords=label',
     'Connection': 'keep-alive'
 }
-req = request.Request(url, headers=headers)
-page = request.urlopen(req).read()
+req = urllib.request.Request(url, headers=headers)
+page = urllib.request.urlopen(req).read()
 page = page.decode('utf-8')
