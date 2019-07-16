@@ -1,0 +1,18 @@
+例子：演示process间的IPC
+
+1 server在循环中接收 msg, msg分为两个 ‘r’ 去共享内存中读取字符串 ‘q’ 退出进程
+2 client在循环中发送 msg， 为‘r’时，会对share memory进行写入，此时会用semaphore对
+该写入动作进行保护。
+{
+该动作我做了一些改变，以该semaphore set ID，添加两个sem，就当做有两个share memory需要保护
+}
+
+知识点：
+1 
+
+错误
+消息虽然有都收到了，但有错误提示，共有四次：
+P operation Error: File too largec
+
+总结
+待续

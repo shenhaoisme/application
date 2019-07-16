@@ -14,6 +14,17 @@ HEADERS = {
     'Referer': 'http://www.mzitu.com'
 }
 
+my_header = {
+	'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+	'accept-encoding: gzip, deflate, br',
+	'accept-language: zh-CN,zh;q=0.9',
+	'cache-control: max-age=0',
+	'cookie: Hm_lvt_dbc355aef238b6c32b43eacbbf161c3c=1562768859,1562852180; Hm_lpvt_dbc355aef238b6c32b43eacbbf161c3c=1562852468',
+	'referer: https://www.mzitu.com/',
+	'upgrade-insecure-requests: 1',
+	'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+}
+
 # 下载图片保存路径
 DIR_PATH = r"/home/sh/share/application/test_python/03_network/mzitu/"
 
@@ -29,7 +40,7 @@ def get_urls():
     for page_url in page_urls:
         try:
             bs = BeautifulSoup(
-                requests.get(page_url, headers=HEADERS, timeout=10).text,
+                requests.get(page_url, headers=my_header, timeout=10).text,
                 'html.parser').find('ul', id="pins")
             result = re.findall(r"(?<=href=)\S+", str(bs))      # 匹配所有 urls
             img_url = [url.replace('"', "") for url in result]
