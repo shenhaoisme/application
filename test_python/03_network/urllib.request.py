@@ -17,15 +17,17 @@ jpg 没有办法decoder为string； html格式需要code
 '''
 
 def get_image():
-    target='http://www.xiaohuar.com/d/file/20190709/small6f25d7b6b627e42a4cd355df522b32d71562683530.jpg'
     
+    target='http://www.xiaohuar.com/d/file/20190709/small6f25d7b6b627e42a4cd355df522b32d71562683530.jpg'
     response=urllib.request.urlopen(target)
     with open('girl.jpg','wb') as f:
         f.write(response.read())
-	
-	target1='http://www.baidu.com'
+    target1='http://www.baidu.com'
     jpg=urllib.request.urlopen(target1).read().decode()
-	with open('girl.jpg','w') as f:
+    with open('girl.jpg','w') as f:
         f.write(jpg)
-		
+def second_downJPG():
+    target='http://www.xiaohuar.com/d/file/20190709/small6f25d7b6b627e42a4cd355df522b32d71562683530.jpg'
+    urllib.request.urlretrieve(target,'girl_cp.jpg')
 get_image()
+second_downJPG()
