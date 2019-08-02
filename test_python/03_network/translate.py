@@ -12,10 +12,10 @@ from_data = {
 }
 
 from_data = urllib.parse.urlencode(from_data).encode()
-request = urllib.request.Request(quest_url, headers = my_headers, )
+request = urllib.request.Request(quest_url, headers = my_headers)
 
 response = urllib.request.urlopen(request, data=from_data)
 
-print('OK')
+print(response.read().decode())
 
 

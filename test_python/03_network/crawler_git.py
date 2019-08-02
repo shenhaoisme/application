@@ -7,7 +7,6 @@ from multiprocessing import Pool, cpu_count
 import requests
 from bs4 import BeautifulSoup
 
-#coding=utf-8
 HEADERS = {
     'X-Requested-With': 'XMLHttpRequest',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 '
@@ -15,14 +14,15 @@ HEADERS = {
     'Referer': 'http://www.mzitu.com'
 }
 my_header = {
-	'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
-	'accept-encoding: gzip, deflate, br',
-	'accept-language: zh-CN,zh;q=0.9',
-	'cache-control: max-age=0',
-	'cookie: Hm_lvt_dbc355aef238b6c32b43eacbbf161c3c=1562768859,1562852180; Hm_lpvt_dbc355aef238b6c32b43eacbbf161c3c=1562852468',
-	'referer: https://www.mzitu.com/',
-	'upgrade-insecure-requests: 1',
-	'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+	'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+        'X-Requested-With': 'XMLHttpRequest',
+	'accept-encoding': 'gzip, deflate, br',
+	'accept-language': 'zh-CN,zh;q=0.9',
+	'cache-control': 'max-age=0',
+	'cookie': 'Hm_lvt_dbc355aef238b6c32b43eacbbf161c3c=1562768859,1562852180; Hm_lpvt_dbc355aef238b6c32b43eacbbf161c3c=1562852468',
+	'referer': 'http://www.mzitu.com/',
+	'upgrade-insecure-requests': '1',
+	'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
 }
 # 下载图片保存路径
 DIR_PATH = r"/home/sh/share/application/test_python/03_network/mzitu/"
@@ -32,20 +32,18 @@ def get_urls():
     """
     获取 mzitu 网站下所有套图的 url
     """
-    page_urls = ['http://www.mzitu.com/188091/{cnt}'.format(cnt=cnt)
-                 for cnt in range(2, 50)]
+    page_urls = ['http://www.mzitu.com/page/{cnt}'.format(cnt=cnt)
+                 for cnt in range(1, 193)]
     print("Please wait for second ...")
     img_urls = []
     for page_url in page_urls:
         try:
-            ret=requests.get(page_url, headers=my_header, timeout=10) #requests.response
-            print(ret.status_code)# 200 is OK
-            print(ret.text)
-            bs = BeautifulSoup(ret.text,'html.parser').find('ul', id="pins")
+            bs = BeautifulSoup(
+                requests.get(page_url, headers=my_header, timeout=10).text,
+                'html.parser').find('ul', id="pins")
             result = re.findall(r"(?<=href=)\S+", str(bs))      # 匹配所有 urls
             img_url = [url.replace('"', "") for url in result]
             img_urls.extend(img_url)
-
         except Exception as e:
             print(e)
     return set(img_urls)    # 利用 set 去重 urls
@@ -59,7 +57,7 @@ def urls_crawler(url):
     爬虫入口，主要爬取操作
     """
     try:
-        r = requests.get(url, headers=HEADERS, timeout=10).text
+        r = requests.get(url, headers=my_header, timeout=10).text
         folder_name = BeautifulSoup(r, 'html.parser').find(
             'div', class_="main-image").find('img')['alt'].replace("?", " ")
         with lock:
@@ -72,7 +70,7 @@ def urls_crawler(url):
 
                 for _, page_url in enumerate(page_urls):
                     time.sleep(0.25)
-                    result = requests.get(page_url, headers=HEADERS, timeout=10).text
+                    result = requests.get(page_url, headers=my_header, timeout=10).text
                     img_url = BeautifulSoup(result, 'html.parser').find(
                         'div', class_="main-image").find(
                         'p').find('a').find('img')['src']
@@ -89,7 +87,7 @@ def save_pic(pic_src, pic_cnt):
     """
     try:
         time.sleep(0.10)
-        img = requests.get(pic_src, headers=HEADERS, timeout=10)
+        img = requests.get(pic_src, headers=my_header, timeout=10)
         img_name = "pic_cnt_{}.jpg".format(pic_cnt + 1)
         with open(img_name, 'ab') as f:
             f.write(img.content)
