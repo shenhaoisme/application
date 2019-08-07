@@ -1,0 +1,23 @@
+在上一篇文章中，我们已经了解了如何在DBus公开的对象中调用一个简单的方法。在这篇文章中，我们将讨论数据类型和属性。
+
+在我们看到的示例中，我们只讨论了字符串，但DBus有许多数据类型，它们可以是基本类型和容器类型。
+基本类型是：
+
+byte (type y);
+boolean (type b);
+int/uint 16/32 bit (type n,q,i,u);
+double (type d);
+unix_fd (type h);
+string (type s);
+object_path (type o);
+signature (type g).
+
+
+如您所见，每种基本类型都由类型字符标识。此类型字符用于方法和方法参数以及结果类型的签名。现在我们将看到容器类型：
+
+struct (type ([field types]), ad ex. a struct composed of two fields, a string and an integer, has type (sn));
+array (type a[element type], ad ex. an array of integers has the type an);
+variant (type v);
+dict (type {[key type][value type]}, ad ex. a dictionary that maps strings to integers has type {sn}).
+因此，除variant 类型外，每个容器类型都有一个由两个或多个字符组成的签名。
+变体类型确实很奇怪，因为它可以表示每个有效的DBus类型，并且消息将包含实际传递值的签名。变体类型非常有用，因为它使DBus能够管理属性。这是org.freedesktop.DBus.Properties接口的d-feet表示：

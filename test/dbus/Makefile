@@ -17,4 +17,8 @@ test_method:
 all : 
 	gcc -o method_snd -Wall method_snd.c `pkg-config --cflags dbus-1` `pkg-config --libs dbus-1`
 	gcc -o method_listen -Wall method_listen.c `pkg-config --cflags dbus-1` `pkg-config --libs dbus-1`
-  
+
+clean:
+	rm -f method_snd method_listen 
+	rm -f dbus_call_method dbus_reply_method_call
+	rm -f dbus_rev_signal dbus_send_signal

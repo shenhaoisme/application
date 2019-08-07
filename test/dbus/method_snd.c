@@ -15,7 +15,7 @@ void reply_to_method_call(DBusMessage * msg, DBusConnection * conn)
     dbus_uint32_t level = 2010;
     dbus_uint32_t serial = 0;
 
-    //从msg中读取参数，这个在上一次学习中学过
+    //这个arg是加了 & 
     if(!dbus_message_iter_init(msg,&arg)) {
         printf("Message has no args/n");
     } else if(dbus_message_iter_get_arg_type(&arg) != DBUS_TYPE_STRING) {
@@ -77,7 +77,8 @@ void listen_dbus()
     }
 
     //要求监听某个singal：来自接口test.signal.Type的信号
-    dbus_bus_add_match(connection,"type='signal',interface='test.signal.Type'",&err);
+    //dbus_bus_add_match(connection,"type='signal',interface='test.signal.Type'",&err);
+    dbus_bus_add_match(connection,"type='signal',interface='test.method.Type'",&err);
     dbus_connection_flush(connection);
     if(dbus_error_is_set(&err)){
         fprintf(stderr,"Match Error %s/n",err.message);
@@ -103,6 +104,7 @@ void listen_dbus()
                 printf("Got Singal with value : %s\n",sigvalue);
             }
         }else if(dbus_message_is_method_call(msg,"test.method.Type","Method")){
+            // }else if(dbus_message_is_method_call(msg,"test.wei.source","Method")){
             //我们这里面先比较了接口名字和方法名字，实际上应当现比较路径
             if(strcmp(dbus_message_get_path (msg),"/test/method/Object") == 0) {
                 reply_to_method_call(msg, connection);
