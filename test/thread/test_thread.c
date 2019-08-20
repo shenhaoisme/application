@@ -4,9 +4,6 @@
 #include <syslog.h>
 #include <unistd.h>  //
 #include <sys/syscall.h>//for gettid
-
-
-
 #include "test_log.h"
 //int pthread_create(pthread_t *restrict tidp,const pthread_attr_t *restrict_attr,void*（*start_rtn)(void*),void *restrict arg);
 /**
@@ -25,17 +22,19 @@ struct member
 	char *name;
 };
 
-// callback
+//几个盲点：
+//线程创建会自动运行。有时候没有结果，是因为进程执行结束推出了
+//线程创建以后，放在后端运行，print还是可以用的，应该是和进程使用同一个终端
 static void * callback(void* arg)  //can input one arg
 {
 	struct member *temp;
 	
-	printf("thread start !!");
+	printf("thread start \n");
 	
 	sleep(1);
-	temp= (struct member*) arg;
-	printf("num is %d", temp->num);
-	printf("name is %s", temp->name);
+	temp = (struct member*) arg;
+	printf("num is %d \n", temp->num);
+	printf("name is %s\n", temp->name);
 	
 	return NULL;
 }
@@ -54,21 +53,22 @@ int test(void)
 		printf("creat fail\n");
 		return -1;
 	}
-	sleep(1);
-	test_log("id %d ", tid_p);
+	//我发现当打印1s的时候，线程callback函数的print没有来得及执行结束
+	//
+	//sleep(2);
+	//也可以直接调用等待函数
 	if(pthread_join(tid_p, NULL)) //wait the thread exit 
 	{
-		printf("thread is not exit...\n");
+		printf("thread is not exit...  normally\n");
 		return -2;
 	}
-	test_log("get pid %ld",getpid());
-	test_log("gettid %ld",(long int)syscall(224));
-	test_log("gettid %ld", (long int)syscall(__NR_gettid));
+	printf("get pid %ld",getpid());
+	printf("gettid %ld",(long int)syscall(224));
+	printf("gettid %ld", (long int)syscall(__NR_gettid));
 	return 0;
 }
 /*--------------------   second example ---------------------------*/
-
-
+//把filename 和 line 也封装进去
 #define thread_creat(tid, entry) _thread_create(__FILE__, __LINE__, tid, entry)
 typedef void thread_entry_t(void);
 #define THREAD_MAX 10
@@ -84,15 +84,11 @@ void test_entry(void)
 	printf("shenhao!!\n");
 }
 
-
 /*re-wirte ale thread_create function
 @note 1 : it is general function, so fikename and linenum are both meaningful
 @note 2 : thread_entry_t : 
 	typedef void thread_entry_t(void); <pointer of func>
 @note 3 : 
-
-
-
 */
 int _thread_create(const char * filename, int linenum, pthread_t* tid, thread_entry_t entry)
 {
@@ -126,7 +122,6 @@ int main()
 	test();
 	//pthread_t* tid;
 	//thread_creat((pthread_t*)tid, test_entry);
-	
 	return 0;
 	
 }

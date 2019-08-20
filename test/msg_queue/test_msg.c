@@ -25,7 +25,7 @@ static int msgid=-1;
 struct my_text
 {
 		long type;
-		char mtext[256];
+		char mtext[20];
 };
 
 int msg_test_init(void)
@@ -69,7 +69,7 @@ int msg_send()
 	int sendlen=0;
 	
 	struct my_text msgp;
-	msgp.type = msgid;
+	msgp.type = 3;
 	//msgp.mtext = "shenhao : hello world";
 	strcpy(msgp.mtext, "shenhao : hello world");
 	sendlen = sizeof(struct my_text) - sizeof(long); // 256 * char 
@@ -86,11 +86,11 @@ int msg_test_ctl(void)
 	int flag=-1;
 	struct msqid_ds info;
 	flag = msgctl( msgid, IPC_STAT, &info ) ;
-    	if (flag < 0 )
-    	{
-        	perror("get message status error") ;
-        	return -1 ;
-    	}
+	if (flag < 0 )
+	{
+    	perror("get message status error") ;
+    	return -1 ;
+	}
 	printf("uid:%d, gid = %d, cuid = %d, cgid= %d\n",info.msg_perm.uid,
 			info.msg_perm.gid,info.msg_perm.cuid,info.msg_perm.cgid);
        	printf("read-write:%03o, cbytes = %lu, qnum = %lu, qbytes= %lu\n" ,
@@ -133,5 +133,6 @@ int main(int argc, char *argv[])
 	msg_test_ctl();
 	
 	msg_test_recv();
+	msg_test_term();
 	return 0;
 }

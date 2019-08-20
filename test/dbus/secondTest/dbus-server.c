@@ -102,3 +102,12 @@ void print_dbus_error(char *str)
     fprintf(stderr, "%s: %s\n", str, dbus_error.message);
     dbus_error_free(&dbus_error);
 }
+
+
+
+/* service is dbus name 
+ *
+ *
+ *
+ *
+ * **/
