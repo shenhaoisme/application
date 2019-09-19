@@ -18,9 +18,42 @@ Description : Hello World in C, Ansi-style
 #include <netdb.h>
 #include <arpa/inet.h>
  
+#include "threadAPI.h"
+int ID = 0;
+
 int handle(int point);
  
-int main(void) 
+void fun(void)
+{
+	switch(thread_get_status(ID))
+	{
+		case THREAD_IS_CLOSED:
+			test_log("THREAD_IS_CLOSED");
+			break;
+		case THREAD_IS_RUNNING:
+			test_log("THREAD_IS_RUNNING");
+			break;
+
+	}
+	test_log("%d",get_name(ID));
+	test_log("run OK");
+
+}
+int main()
+{
+	int i;
+	for(i = 0 ; i < 10; i++)
+	{
+		thread_creat(i, fun);
+		ID++;
+		sleep(1);
+	}
+	
+
+	return 0;
+}
+
+int main1(void) 
 {
 	int sfd, ind;
 	struct sockaddr_in addr;
@@ -33,6 +66,7 @@ int main(void)
 	int ret; // 返回值设置
 	socklen_t lent;
 	int pid;
+	
 	addr.sin_family = AF_INET; //IPv4 Internet protocols
 	 
 	addr.sin_port = htons(5000); //这里输入服务器端口号
@@ -69,27 +103,30 @@ int main(void)
 		lent = sizeof(clent);
 		ind = accept(sfd, (struct sockaddr *) &clent, &lent);
 		if (ind < 0) {
-		printf("accept error %d \n", ind);
-		return -1;
+			printf("accept error %d \n", ind);
+			return -1;
 		}
  
 		printf("infor \n");
 		//inet_ntop 函数 , ntohs 函数
 		printf("clent addr%s porit %d\n", inet_ntop(AF_INET, &clent.sin_addr, buf, sizeof(buf)),ntohs(clent.sin_port));
 		 
-		pid = fork();
+		// pid = fork();
 		 
-		if (pid == 0) 
-		{
-			//子进程
-			close(sfd);
-			handle(ind);
-		}
-		 else if (pid < 0) 
-		{
-			//error
-			close(ind);
-		} else {} //nothing to do on father
+		// if (pid == 0) 
+		// {
+		// 	//子进程
+		// 	close(sfd);
+		// 	handle(ind);
+		// }
+		//  else if (pid < 0) 
+		// {
+		// 	//error
+		// 	close(ind);
+		// } else {} //nothing to do on father
+
+		thread_creat(ID, fun);
+		ID++;
 	}
 	 
 
